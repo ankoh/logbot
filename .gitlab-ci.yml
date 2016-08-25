@@ -1,0 +1,6 @@
+tests:
+  script:
+    - make install
+    - make tests
+  tags:
+    - python3
