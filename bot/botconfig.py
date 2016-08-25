@@ -9,11 +9,12 @@ class BotConfiguration:
     """
 
     class Settings(Enum):
-        DB_HOST = 1
-        DB_PORT = 2
-        DB_USER = 3
-        DB_SECRET = 4
-        SLACK_API_KEY = 5
+        PG_HOST = 1
+        PG_PORT = 2
+        PG_USER = 3
+        PG_SECRET = 4
+        PG_DB = 5
+        SLACK_API_KEY = 6
 
     def __init__(self):
         self.valid = True

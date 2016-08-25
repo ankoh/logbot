@@ -6,8 +6,6 @@ from bot.logging import log
 PROJECT_ROOT=dirname(dirname(__file__))
 
 if __name__ == '__main__':
-    log.info("Disabling non-critical logs for cleaner unittest output")
-
     # Create runner
     logging.disable(logging.CRITICAL)
     loader = unittest.TestLoader()
