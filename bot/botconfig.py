@@ -1,4 +1,5 @@
 import os
+from enum import Enum
 
 class BotConfiguration:
     """
@@ -7,19 +8,18 @@ class BotConfiguration:
     the settings from environment variables.
     """
 
-    __required_keys = [
-        'DB_HOST',
-        'DB_PORT',
-        'DB_USER',
-        'DB_SECRET',
-        'SLACK_API_KEY'
-    ]
+    class Settings(Enum):
+        DB_HOST = 1
+        DB_PORT = 2
+        DB_USER = 3
+        DB_SECRET = 4
+        SLACK_API_KEY = 5
 
     def __init__(self):
         self.valid = True
         self.config = {}
-        for key in self.__required_keys:
-            self.assert_env(key)
+        for key in BotConfiguration.Settings:
+            self.assert_env(key.name)
 
     def assert_env(self, key):
         self.valid &= key in os.environ

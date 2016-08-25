@@ -1,9 +1,15 @@
-#----------------------------------------------------
-.PHONY: freeze
+DOCKER_IMAGE ?= ankoh/logbot:latest
+
+image:
+	docker build -t $(DOCKER_IMAGE) .
+
+install:
+	pip install -r requirements.txt
+
 freeze:
 	pip freeze > requirements.txt
-#-----------------------------------------------------
-.PHONY: tests
+
 tests:
 	python -m tests.runner
-#-----------------------------------------------------
+
+.PHONY: install freeze tests

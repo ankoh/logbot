@@ -2,6 +2,10 @@ import logging
 import sys
 
 def create_logger():
+    """
+    Creates a logger
+    """
+    
     formatter = logging.Formatter(fmt='%(asctime)s - %(levelname)s - %(module)s - %(funcName)s - %(message)s')
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
