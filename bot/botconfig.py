@@ -29,7 +29,7 @@ class BotConfiguration:
     def is_valid(self):
         return self.valid
 
-    def get(self,key):
+    def get(self,setting):
         assert self.is_valid()
-        return self.config[key]
+        return self.config[setting.name]
 

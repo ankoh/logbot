@@ -1,6 +1,5 @@
 import unittest
 import os
-
 from bot.botconfig import BotConfiguration
 
 class TestBotConfiguration(unittest.TestCase):
@@ -18,4 +17,4 @@ class TestBotConfiguration(unittest.TestCase):
             os.environ[key.name] = self.default_value
             config = BotConfiguration()
             self.assertTrue(config.is_valid())
-            self.assertEqual(config.get(key.name),self.default_value)
+            self.assertEqual(config.get(key),self.default_value)
