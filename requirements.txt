@@ -1,0 +1,6 @@
+psycopg2==2.6.2
+requests==2.11.1
+Rx==1.5.2
+six==1.10.0
+slackclient==1.0.1
+websocket-client==0.37.0
