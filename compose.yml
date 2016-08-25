@@ -1,0 +1,9 @@
+data:
+  image: postgres:latest
+  restart: always
+
+bot: 
+  image: ankoh/logbot:latest
+  links:
+    - data
+  restart: always
