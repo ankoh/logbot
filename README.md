@@ -1,0 +1,1 @@
+[![build status](https://gitlab.kohn.io/ankoh/logbot/badges/master/build.svg)](https://gitlab.kohn.io/ankoh/logbot/commits/master)
