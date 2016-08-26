@@ -6,4 +6,4 @@ COPY Makefile requirements.txt /opt/logbot/
 RUN cd /opt/logbot && make install
 
 # Copy sources
-COPY bot sql/schema.sql docker/entrypoint.sh /opt/logbot/
+COPY bot sql docker/entrypoint.sh /opt/logbot/

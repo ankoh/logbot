@@ -12,7 +12,6 @@ def main():
     # Prepare argument parser
     arg_parser=argparse.ArgumentParser(description="Logbot runner")
     arg_parser.add_argument('-m', '--mode', type=str, default='bot', nargs=1, 'Execution mode')
-    arg_parser.add_argument('-s', '--schema', type=str, default=default_schema, nargs=1, 'Schema file')
     args = arg_parser.parse_args();
 
     # Read environment
@@ -28,9 +27,6 @@ def main():
 
     # Run the different modes
     if args.mode[0]=='prepare':
-        if not isfile(args.schema[0]):
-            log.critical('You need to provide a valid schema file with the parameter "--schema"')
-            sys.exit(1)
         
         pass
 
