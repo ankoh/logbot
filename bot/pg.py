@@ -1,6 +1,12 @@
 import psycopg2
 from datetime import datetime
+from os.path import join, dirname
 from bot.config import BotConfiguration
+
+project_root = dirname(dirname(__file__))
+sql_dir = join(project_root,'sql')
+create_schema_script = join(sql_dir, 'create_schema.sql')
+drop_relations_script = join(sql_dir, 'drop_relations.sql')
 
 class PostgresClient(object):
     """
@@ -40,6 +46,18 @@ class PostgresClient(object):
         with self.conn.cursor() as cursor:
             cursor.execute(open(path, "r").read())
         self.conn.autocommit = t
+
+    def create_schema(self) -> int:
+        """
+        Creates the sql schema
+        """
+        self.run_script(create_schema_script)
+    
+    def drop_relations(self) -> int:
+        """
+        Drops all relations
+        """
+        self.run_script(drop_relations_script)
     
     def insert_or_update_profile(self, key: str) -> int:
         """

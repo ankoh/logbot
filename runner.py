@@ -6,7 +6,6 @@ from bot.config import BotConfiguration
 from bot.pg import PostgresClient
 
 project_root=dirname(dirname(__file__))
-default_schema=join(project_root,'schema.sql')
 
 def main() -> ():
     # Prepare argument parser
