@@ -12,7 +12,7 @@ class PostgresClient(object):
     
     def connect():
         """
-        Connect to the postgres connection
+        Connect to the postgres database
         """
         self.conn=psycopg2.connect(
             host=config.get(BotConfiguration.Settings.PG_HOST),
