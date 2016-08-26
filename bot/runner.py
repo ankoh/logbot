@@ -22,7 +22,9 @@ def main():
 
     # Create postgres client
     pg_client = PostgresClient(config)
-    pg_client.connect()
+    if not pg_client.connect():
+        log.critical("Failed to connect to postgres database")
+        return
 
     # Run the different modes
     if args.mode[0]=='prepare':
