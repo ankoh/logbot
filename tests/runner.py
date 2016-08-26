@@ -3,7 +3,7 @@ import unittest
 from os.path import dirname, join
 from bot.logging import log
 
-project_root=dirname(dirname(__file__))
+project_root = dirname(dirname(__file__))
 
 if __name__ == '__main__':
     # Create runner

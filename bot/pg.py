@@ -24,7 +24,7 @@ class PostgresClient(object):
                 host=config.get(BotConfiguration.Settings.PG_HOST),
                 port=config.get(BotConfiguration.Settings.PG_PORT),
                 database=config.get(BotConfiguration.Settings.PG_DB),
-                user=config.get(BotConfiguration.Settings.PG_USER),
+                profile=config.get(BotConfiguration.Settings.PG_profile),
                 password=config.get(BotConfiguration.Settings.PG_SECRET)
             )
             self.initialized = True
