@@ -4,3 +4,10 @@ tests:
     - make tests
   tags:
     - python3
+  services:
+    - postgres:latest
+  variables:
+    POSTGRES_USER: logbot_test_runner
+    POSTGRES_PASSWORD: thanks_for_all_the_fish
+    POSTGRES_DB: logbot_testdb
+  

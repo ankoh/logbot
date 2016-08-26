@@ -6,7 +6,7 @@ class TestPostgresClient(unittest.TestCase):
     def prepare_test_db(self):
         try:
             self.conn=psycopg2.connect(
-                host='localhost',
+                host='postgres',
                 port=5432,
                 database='logbot_testdb',
                 user='logbot_test_runner',
