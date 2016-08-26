@@ -4,8 +4,7 @@ from os.path import isfile,join
 from bot.logging import log
 from bot.config import BotConfiguration
 from bot.pg import PostgresClient
-
-project_root=dirname(dirname(__file__))
+from bot.rtm import RTMClient
 
 def main() -> ():
     # Prepare argument parser
@@ -16,7 +15,7 @@ def main() -> ():
     # Read environment
     config = BotConfiguration()
     if not config.is_valid():
-        log.critical('Invalid or missing setting "' + config.blame + '"')
+        log.critical('Invalid or missing environment variable "' + config.blame + '"')
 
     # Create postgres client
     pg_client = PostgresClient(config)
@@ -26,13 +25,15 @@ def main() -> ():
 
     # Run the different modes
     if args.mode[0]=='prepare':
-        
-        pass
+        pg_client.create_schema()
+        log.info("Created SQL Schema")
+    elif args.mode[0]=='bot':
+        rtm = RTMClient(config)
+        rtm.run()
 
-    if args.mode[0]=='bot':
-        pass
-
-
-if __main__ == '__main__':
-    main()
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(1)
     

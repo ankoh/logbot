@@ -2,6 +2,8 @@ from bot.config import BotConfiguration
 from bot.logging import log
 from slackclient import SlackClient
 from rx.subjects import Subject
+from bot.logging import log
+import time
 
 class RTMClient(object):
     """
@@ -37,10 +39,11 @@ class RTMClient(object):
         assert self.initialized
         now = int(time.time())
         if now > self.last_ping + 3:
+            log.debug("Ping")
             self.client.server.ping()
             self.last_ping = now
 
-    def run(self) -> ():
+    def run(self, infinite_loop = True) -> ():
         """
         Connects the client to the Slack RTM API and publishes events
         to the incoming_data subject
@@ -49,15 +52,21 @@ class RTMClient(object):
         The subscribers then use incoming_data.subscribeOn(...) to
         schedule their callbacks with an asynchronous scheduler.
         """
-        log.info("Connecting to the Slack API")
+        assert not self.initialized
+        log.debug('Connecting to the Slack API')
         if not self.connect():
-            log.critical("Failed to connect to the Slack API")
+            log.critical('Failed to connect to the Slack API')
             return
+        log.info('Established connection to the Slack API')
         
-        while True:
+        first_run = True
+        while infinite_loop or first_run:
             for reply in self.client.rtm_read():
-                self.incoming_data.onNext(reply)
+                log.debug('Received: ' + str(reply))
+                self.incoming_data.on_next(reply)
             self.autoping()
-            time.sleep(.1)
+            if not first_run:
+                time.sleep(.1)
+            first_run = False
 
         
