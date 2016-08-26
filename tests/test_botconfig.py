@@ -1,6 +1,6 @@
 import unittest
 import os
-from bot.botconfig import BotConfiguration
+from bot.config import BotConfiguration
 
 class TestBotConfiguration(unittest.TestCase):
     default_value='null'
@@ -9,7 +9,7 @@ class TestBotConfiguration(unittest.TestCase):
         for key in BotConfiguration.Settings:
             os.environ[key.name]='null'
 
-    def test_settings(self):
+    def test_env_settings(self):
         for key in BotConfiguration.Settings:
             self.write_valid_config()
             os.environ.pop(key.name)

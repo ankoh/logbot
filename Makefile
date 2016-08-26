@@ -1,7 +1,7 @@
 DOCKER_IMAGE ?= ankoh/logbot:latest
 
 image:
-	docker build -t $(DOCKER_IMAGE) -f docker/Dockerfile .
+	docker build -t $(DOCKER_IMAGE) -f Dockerfile .
 
 install:
 	pip install -r requirements.txt

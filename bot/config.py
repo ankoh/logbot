@@ -19,15 +19,19 @@ class BotConfiguration:
     def __init__(self):
         self.valid = True
         self.config = {}
+        self.blame = ''
         for key in BotConfiguration.Settings:
             self.assert_env(key.name)
+            if not self.valid:
+                self.blame=key.name
+                break
 
-    def assert_env(self, key):
+    def assert_env(self, key) -> bool:
         self.valid &= key in os.environ
         if self.valid:
             self.config[key] = os.environ[key]
 
-    def is_valid(self):
+    def is_valid(self) -> bool:
         return self.valid
 
     def get(self,setting):

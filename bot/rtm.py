@@ -1,4 +1,4 @@
-from bot.botconfig import BotConfiguration
+from bot.config import BotConfiguration
 from bot.logging import log
 from slackclient import SlackClient
 from rx.subjects import Subject
