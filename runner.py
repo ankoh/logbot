@@ -11,7 +11,7 @@ default_schema=join(project_root,'schema.sql')
 def main() -> ():
     # Prepare argument parser
     arg_parser=argparse.ArgumentParser(description="Logbot runner")
-    arg_parser.add_argument('-m', '--mode', type=str, default='bot', nargs=1, 'Execution mode')
+    arg_parser.add_argument('-m', '--mode', type=str, default='bot', nargs=1, help='Execution mode')
     args = arg_parser.parse_args();
 
     # Read environment
@@ -34,6 +34,6 @@ def main() -> ():
         pass
 
 
-if __main__ = '__main__':
+if __main__ == '__main__':
     main()
     

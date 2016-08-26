@@ -10,6 +10,7 @@ freeze:
 	pip freeze > requirements.txt
 
 tests:
-	python -m tests.runner
+	coverage run --source=bot tester.py
+	coverage report
 
 .PHONY: install freeze tests
