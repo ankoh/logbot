@@ -1,6 +1,7 @@
 import psycopg2
 import unittest
 import os
+from datetime import datetime
 from os.path import join, dirname
 from bot.pg import PostgresClient
 from bot.config import BotConfiguration
@@ -14,7 +15,7 @@ class TestPostgresClient(unittest.TestCase):
 
     def prepare_connection(self) -> ():
         """
-        Prepares a test databse 
+        Prepares a connection to the test database 
         """
         os.environ[BotConfiguration.Settings.PG_HOST.name] = 'postgres'
         os.environ[BotConfiguration.Settings.PG_PORT.name] = '5432'
@@ -36,6 +37,11 @@ class TestPostgresClient(unittest.TestCase):
         """
         Tests the postgres client
         """
+
+        # Prepare database
         self.prepare_connection()
         self.client.run_script(schema_drop_script)
         self.client.run_script(schema_creation_script)
+
+        # Insert a bunch of messages
+        self.client.insert_channel_message("C2147483705", "U2147483697", "Hello world", datetime.now())

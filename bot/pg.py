@@ -1,4 +1,5 @@
 import psycopg2
+from datetime import datetime
 from bot.config import BotConfiguration
 
 class PostgresClient(object):
@@ -40,3 +41,33 @@ class PostgresClient(object):
             cursor.execute(open(path, "r").read())
         self.conn.autocommit = t
     
+    def insert_or_update_profile(self, key: str) -> int:
+        """
+        Inserts or updates a profile
+        """
+        sql_string = 'INSERT INTO profile (key) VALUES (%s) ON CONFLICT DO NOTHING RETURNING id;'
+        with self.conn.cursor() as cursor:
+            cursor.execute(sql_string,[key])
+            self.conn.commit()
+            return cursor.fetchone()[0]
+    
+    def insert_or_update_channel(self, key: str) -> int:
+        """
+        Inserts or updates a channel
+        """
+        sql_string = 'INSERT INTO channel (key) VALUES (%s) ON CONFLICT DO NOTHING RETURNING id;'
+        with self.conn.cursor() as cursor:
+            cursor.execute(sql_string,[key])
+            self.conn.commit()
+            return cursor.fetchone()[0]
+
+    def insert_channel_message(self, channel: str, profile: str, content: str, ts: datetime) -> ():
+        """
+        Inserts or updates a channel message
+        """
+        profile_id = self.insert_or_update_profile(profile)
+        channel_id = self.insert_or_update_channel(channel)
+        sql_string = 'INSERT INTO channel_message (author, channel, ts, content) VALUES (%s, %s, %s, %s);'
+        with self.conn.cursor() as cursor:
+            cursor.execute(sql_string,[profile_id, channel_id, ts, content])
+            self.conn.commit()
