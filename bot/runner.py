@@ -8,7 +8,7 @@ from bot.pg import PostgresClient
 project_root=dirname(dirname(__file__))
 default_schema=join(project_root,'schema.sql')
 
-def main():
+def main() -> ():
     # Prepare argument parser
     arg_parser=argparse.ArgumentParser(description="Logbot runner")
     arg_parser.add_argument('-m', '--mode', type=str, default='bot', nargs=1, 'Execution mode')

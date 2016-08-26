@@ -5,11 +5,11 @@ from bot.config import BotConfiguration
 class TestBotConfiguration(unittest.TestCase):
     default_value='null'
     
-    def write_valid_config(self):
+    def write_valid_config(self) -> ():
         for key in BotConfiguration.Settings:
             os.environ[key.name]='null'
 
-    def test_env_settings(self):
+    def test_env_settings(self) -> ():
         for key in BotConfiguration.Settings:
             self.write_valid_config()
             os.environ.pop(key.name)

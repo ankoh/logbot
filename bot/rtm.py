@@ -30,7 +30,7 @@ class RTMClient(object):
         self.initialized = True       
         return True
 
-    def autoping(self):
+    def autoping(self) -> ():
         """
         Ping the server every 3 seconds
         """
@@ -40,7 +40,7 @@ class RTMClient(object):
             self.client.server.ping()
             self.last_ping = now
 
-    def run(self):
+    def run(self) -> ():
         """
         Connects the client to the Slack RTM API and publishes events
         to the incoming_data subject

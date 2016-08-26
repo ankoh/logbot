@@ -34,7 +34,7 @@ class BotConfiguration:
     def is_valid(self) -> bool:
         return self.valid
 
-    def get(self,setting):
+    def get(self,setting) -> str:
         assert self.is_valid()
         return self.config[setting.name]
 

@@ -1,7 +1,7 @@
 import logging
 import sys
 
-def create_logger():
+def create_logger() -> logging.Logger:
     """
     Creates a logger
     """
