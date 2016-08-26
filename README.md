@@ -1,1 +1,1 @@
-[![build status](https://gitlab.kohn.io/ankoh/logbot/badges/master/build.svg)](https://gitlab.kohn.io/ankoh/logbot/commits/master)
+[![build status](https://gitlab.kohn.io/ankoh/logbot/badges/master/build.svg)](https://gitlab.kohn.io/ankoh/logbot/commits/master) [![coverage report](https://gitlab.kohn.io/ankoh/logbot/badges/master/coverage.svg)](https://gitlab.kohn.io/ankoh/logbot/commits/master)
