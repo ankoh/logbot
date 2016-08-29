@@ -13,7 +13,7 @@ class RTMClient(object):
     Read this for more information on ReactiveX:
     http://reactivex.io/documentation/observable.html
     """
-    
+
     def __init__(self, config: BotConfiguration):
         self.config = config
         self.client = None
@@ -32,25 +32,21 @@ class RTMClient(object):
         self.initialized = True       
         return True
 
-    def autoping(self) -> ():
+    def keep_alive(self) -> ():
         """
         Ping the server every 3 seconds
         """
         assert self.initialized
         now = int(time.time())
         if now > self.last_ping + 3:
-            log.debug("Ping")
+            log.debug("PING")
             self.client.server.ping()
             self.last_ping = now
 
-    def run(self, infinite_loop = True) -> ():
+    def run_loop(self, infinite_loop = True) -> ():
         """
         Connects the client to the Slack RTM API and publishes events
         to the incoming_data subject
-
-        Note that this client is meant to run in the foreground.
-        The subscribers then use incoming_data.subscribeOn(...) to
-        schedule their callbacks with an asynchronous scheduler.
         """
         assert not self.initialized
         log.debug('Connecting to the Slack API')
@@ -58,15 +54,17 @@ class RTMClient(object):
             log.critical('Failed to connect to the Slack API')
             return
         log.info('Established connection to the Slack API')
-        
+
         first_run = True
         while infinite_loop or first_run:
             for reply in self.client.rtm_read():
-                log.debug('Received: ' + str(reply))
+                if 'type' in reply and reply['type']=='pong':
+                    log.debug("PING ACK")
+                    continue
                 self.incoming_data.on_next(reply)
-            self.autoping()
+            self.keep_alive()
             if not first_run:
                 time.sleep(.1)
             first_run = False
 
-        
+

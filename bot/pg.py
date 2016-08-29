@@ -63,7 +63,7 @@ class PostgresClient(object):
         """
         Inserts or updates a profile
         """
-        sql_string = 'INSERT INTO profile (key) VALUES (%s) ON CONFLICT DO NOTHING RETURNING id;'
+        sql_string = 'INSERT INTO profile (key) VALUES (%s) ON CONFLICT (key) DO UPDATE SET key=EXCLUDED.key RETURNING id;'
         with self.conn.cursor() as cursor:
             cursor.execute(sql_string,[key])
             self.conn.commit()
@@ -73,19 +73,19 @@ class PostgresClient(object):
         """
         Inserts or updates a channel
         """
-        sql_string = 'INSERT INTO channel (key) VALUES (%s) ON CONFLICT DO NOTHING RETURNING id;'
+        sql_string = 'INSERT INTO channel (key) VALUES (%s) ON CONFLICT (key) DO UPDATE SET key=EXCLUDED.key RETURNING id;'
         with self.conn.cursor() as cursor:
             cursor.execute(sql_string,[key])
             self.conn.commit()
             return cursor.fetchone()[0]
 
-    def insert_channel_message(self, channel: str, profile: str, content: str, ts: datetime) -> ():
+    def insert_channel_message(self, channel: str, profile: str, content: str, clock: str) -> ():
         """
         Inserts or updates a channel message
         """
         profile_id = self.insert_or_update_profile(profile)
         channel_id = self.insert_or_update_channel(channel)
-        sql_string = 'INSERT INTO channel_message (author, channel, ts, content) VALUES (%s, %s, %s, %s);'
+        sql_string = 'INSERT INTO channel_message (author, channel, received,  clock, content) VALUES (%s, %s, %s, %s, %s);'
         with self.conn.cursor() as cursor:
-            cursor.execute(sql_string,[profile_id, channel_id, ts, content])
+            cursor.execute(sql_string,[profile_id, channel_id, datetime.now(), clock, content])
             self.conn.commit()

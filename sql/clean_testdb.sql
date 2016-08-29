@@ -1,2 +1,2 @@
-REVOKE ALL PRIVILEGES ON DATABASE logbot_testdb FROM logbot_test_runner;
+REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC FROM logbot_test_runner;
 DROP ROLE logbot_test_runner;

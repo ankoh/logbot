@@ -5,6 +5,7 @@ from bot.logging import log
 from bot.config import BotConfiguration
 from bot.pg import PostgresClient
 from bot.rtm import RTMClient
+from bot.ctrl import BotController
 
 def main() -> ():
     # Prepare argument parser
@@ -28,12 +29,13 @@ def main() -> ():
         pg_client.create_schema()
         log.info("Created SQL Schema")
     elif args.mode[0]=='bot':
-        rtm = RTMClient(config)
-        rtm.run()
+        rtm_client = RTMClient(config)
+        controller = BotController(rtm_client,pg_client)
+        rtm_client.run_loop()
 
 if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
         sys.exit(1)
-    
+

@@ -10,6 +10,9 @@ freeze:
 	pip freeze > requirements.txt
 
 tests:
+	python3 tester.py
+
+coverage:
 	coverage run --source=bot tester.py
 	coverage report
 

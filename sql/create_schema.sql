@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS channel_message (
     id SERIAL PRIMARY KEY,
     author INT NOT NULL,
     channel INT NOT NULL,
-    ts TIMESTAMP NOT NULL,
+    received TIMESTAMP NOT NULL,
+    clock VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
 
     FOREIGN KEY (channel) REFERENCES channel(ID) ON DELETE CASCADE,
@@ -29,4 +30,5 @@ CREATE TABLE IF NOT EXISTS channel_message (
 );
 CREATE INDEX IF NOT EXISTS channel_message_channel_idx ON channel_message(channel);
 CREATE INDEX IF NOT EXISTS channel_message_author_idx ON channel_message(author);
-CREATE INDEX IF NOT EXISTS channel_message_ts_idx ON channel_message(ts);
+CREATE INDEX IF NOT EXISTS channel_message_received_idx ON channel_message(received);
+CREATE INDEX IF NOT EXISTS channel_message_clock_idx ON channel_message(clock);
