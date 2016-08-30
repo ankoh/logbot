@@ -39,3 +39,4 @@ class TestPostgresClient(unittest.TestCase):
 
         # Insert a bunch of messages
         self.client.insert_channel_message('C2147483705', 'U2147483697', 'Hello world', 'clock')
+        self.client.insert_channel_message('C2147483705', 'U2147483697', 'Hello world', 'clock')

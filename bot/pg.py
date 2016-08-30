@@ -52,28 +52,52 @@ class PostgresClient(object):
         Creates the sql schema
         """
         self.run_script(create_schema_script)
-    
+
     def drop_relations(self) -> int:
         """
         Drops all relations
         """
         self.run_script(drop_relations_script)
-    
-    def insert_or_update_profile(self, key: str) -> int:
+
+    def insert_profile(self, key: str) -> int:
         """
-        Inserts or updates a profile
+        Inserts a profile
         """
-        sql_string = 'INSERT INTO profile (key) VALUES (%s) ON CONFLICT (key) DO UPDATE SET key=EXCLUDED.key RETURNING id;'
+        sql_string = """
+        WITH val(key) AS (VALUES (%s)),
+            ins AS (
+                INSERT INTO profile (key)
+                SELECT key FROM val
+                ON CONFLICT (key) DO NOTHING
+                RETURNING id,key
+            ) 
+        SELECT COALESCE(i.id,p.id) AS id
+        FROM val v
+            LEFT JOIN ins i ON v.key=i.key 
+            LEFT JOIN profile p ON v.key=p.key;
+        """
         with self.conn.cursor() as cursor:
             cursor.execute(sql_string,[key])
             self.conn.commit()
             return cursor.fetchone()[0]
-    
-    def insert_or_update_channel(self, key: str) -> int:
+
+    def insert_channel(self, key: str) -> int:
         """
-        Inserts or updates a channel
+        Inserts a channel
         """
-        sql_string = 'INSERT INTO channel (key) VALUES (%s) ON CONFLICT (key) DO UPDATE SET key=EXCLUDED.key RETURNING id;'
+        sql_string = """
+        WITH val(key) AS (VALUES (%s)),
+            ins AS (
+                INSERT INTO channel (key)
+                SELECT key FROM val
+                ON CONFLICT (key) DO NOTHING
+                RETURNING id,key
+            ) 
+        SELECT COALESCE(i.id,c.id) AS id
+        FROM val v
+            LEFT JOIN ins i ON v.key=i.key 
+            LEFT JOIN channel c ON v.key=c.key;
+        """
         with self.conn.cursor() as cursor:
             cursor.execute(sql_string,[key])
             self.conn.commit()
@@ -83,9 +107,9 @@ class PostgresClient(object):
         """
         Inserts or updates a channel message
         """
-        profile_id = self.insert_or_update_profile(profile)
-        channel_id = self.insert_or_update_channel(channel)
-        sql_string = 'INSERT INTO channel_message (author, channel, received,  clock, content) VALUES (%s, %s, %s, %s, %s);'
+        profile_id = self.insert_profile(profile)
+        channel_id = self.insert_channel(channel)
+        sql_string = 'INSERT INTO message (author, channel, received,  clock, content) VALUES (%s, %s, %s, %s, %s);'
         with self.conn.cursor() as cursor:
             cursor.execute(sql_string,[profile_id, channel_id, datetime.now(), clock, content])
             self.conn.commit()

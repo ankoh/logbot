@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS channel (
 );
 CREATE INDEX IF NOT EXISTS channel_key_idx ON channel(key);
 
--- Channel Messages
-CREATE TABLE IF NOT EXISTS channel_message (
+-- Messages
+CREATE TABLE IF NOT EXISTS message (
     id SERIAL PRIMARY KEY,
     author INT NOT NULL,
     channel INT NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS channel_message (
     FOREIGN KEY (channel) REFERENCES channel(ID) ON DELETE CASCADE,
     FOREIGN KEY (author) REFERENCES profile(ID) ON DELETE CASCADE
 );
-CREATE INDEX IF NOT EXISTS channel_message_channel_idx ON channel_message(channel);
-CREATE INDEX IF NOT EXISTS channel_message_author_idx ON channel_message(author);
-CREATE INDEX IF NOT EXISTS channel_message_received_idx ON channel_message(received);
-CREATE INDEX IF NOT EXISTS channel_message_clock_idx ON channel_message(clock);
+CREATE INDEX IF NOT EXISTS message_channel_idx ON message(channel);
+CREATE INDEX IF NOT EXISTS message_author_idx ON message(author);
+CREATE INDEX IF NOT EXISTS message_received_idx ON message(received);
+CREATE INDEX IF NOT EXISTS message_clock_idx ON message(clock);
