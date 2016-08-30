@@ -1,5 +1,6 @@
 import argparse
 import sys
+import time
 from os.path import isfile,join
 from bot.logging import log
 from bot.config import BotConfiguration
@@ -10,7 +11,7 @@ from bot.ctrl import BotController
 def main() -> ():
     # Prepare argument parser
     arg_parser=argparse.ArgumentParser(description="Logbot runner")
-    arg_parser.add_argument('-m', '--mode', type=str, default='bot', nargs=1, help='Execution mode')
+    arg_parser.add_argument('-t', '--target', type=str, default=['bot'], nargs=1, help='Execution mode')
     args = arg_parser.parse_args();
 
     # Read environment
@@ -19,16 +20,24 @@ def main() -> ():
         log.critical('Invalid or missing environment variable "' + config.blame + '"')
 
     # Create postgres client
+    retries = 5
     pg_client = PostgresClient(config)
-    if not pg_client.connect():
-        log.critical("Failed to connect to postgres database")
-        return
+    while retries > 0:
+        if pg_client.connect():
+            break
+        log.info("Couldn't reach Postgres. Sleeping a bit..")
+        retries -= 1
+        time.sleep(1)
+
+    if retries == 0:
+        log.critical("Giving up! Failed to connect to postgres database")
 
     # Run the different modes
-    if args.mode[0]=='prepare':
+    if args.target[0]=='prepare':
         pg_client.create_schema()
         log.info("Created SQL Schema")
-    elif args.mode[0]=='bot':
+
+    elif args.target[0]=='bot':
         rtm_client = RTMClient(config)
         controller = BotController(rtm_client,pg_client)
         rtm_client.run_loop()

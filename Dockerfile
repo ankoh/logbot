@@ -5,5 +5,15 @@ MAINTAINER André Kohn <andre@kohn.io>
 COPY Makefile requirements.txt /opt/logbot/
 RUN cd /opt/logbot && make install
 
+# Set PYTHONPATH
+ENV PYTHONPATH /opt/logbot:$PYTHONPATH
+
 # Copy sources
-COPY bot sql docker/entrypoint.sh /opt/logbot/
+COPY bot /opt/logbot/bot/
+COPY sql /opt/logbot/sql/
+COPY runner.py entrypoint.sh /opt/logbot/
+RUN chmod +x /opt/logbot/entrypoint.sh
+
+# Prepare entrypoint
+ENTRYPOINT ["/opt/logbot/entrypoint.sh"]
+CMD ["python", "/opt/logbot/runner.py"]

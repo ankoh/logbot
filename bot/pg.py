@@ -103,7 +103,7 @@ class PostgresClient(object):
             self.conn.commit()
             return cursor.fetchone()[0]
 
-    def insert_channel_message(self, channel: str, profile: str, content: str, clock: str) -> ():
+    def insert_message(self, channel: str, profile: str, content: str, clock: str) -> ():
         """
         Inserts or updates a channel message
         """

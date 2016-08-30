@@ -1,9 +1,24 @@
 data:
   image: postgres:latest
   restart: always
+  environment:
+    - POSTGRES_USER=logbot_runner
+    - POSTGRES_PASSWORD=thanks_for_all_the_fish
+    - POSTGRES_DB=logbot_db
 
 bot: 
   image: ankoh/logbot:latest
   links:
-    - data
+    - data:postgres
   restart: always
+  log_driver: "json-file"
+  log_opt:
+    max-size: "10m"
+    max-file: "10"
+  environment:
+    - PG_HOST=postgres
+    - PG_PORT=5432
+    - PG_USER=logbot_runner
+    - PG_DB=logbot_db
+    - PG_SECRET=thanks_for_all_the_fish
+    - SLACK_API_KEY=shhh-use-yours
