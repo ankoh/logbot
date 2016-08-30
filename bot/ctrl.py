@@ -56,5 +56,5 @@ class BotController(Observer):
         if 'text' not in data: return
 
         # Write to database
-        self.pg_client.insert_channel_message(data['channel'],data['user'],data['text'],data['ts']) 
+        self.pg_client.insert_message(data['channel'],data['user'],data['text'],data['ts']) 
         log.debug('Received message in channel "{0}" of user "{1}"'.format(data['channel'],data['user']))
